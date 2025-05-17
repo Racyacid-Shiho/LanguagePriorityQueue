@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "lpq",
+	"version": "${version}",
+	"name": "Language Priority Queue",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": ["Racyacid"],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"environment": "client",
+	"mixins": ["lpq.mixins.json"],
+	"depends": {
+		"minecraft": "~1.21.5",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

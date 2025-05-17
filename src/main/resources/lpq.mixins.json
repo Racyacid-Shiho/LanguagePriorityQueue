@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "cn.racyacid.lpq.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"LanguageManagerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
