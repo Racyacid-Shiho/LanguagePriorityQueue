@@ -27,11 +27,25 @@ public final class LanguagePriorityQueue {
     public static Map<String, String[]> getQueues() {
         if (!QUEUES.isEmpty()) return QUEUES;
 
+        Map<String, String[]> queues = getOrCreateQueuesInConfig();
+
+        if (queues.isEmpty()) {
+            genDefaultQueues();
+            createConfig();
+        } else {
+            QUEUES.putAll(queues);
+        }
+
+        return QUEUES;
+    }
+
+    private static Map<String, String[]> getOrCreateQueuesInConfig() {
         Gson gson = new Gson();
-        Map<String, List<String>> queues;
+        Map<String, String[]> queues = HashMap.newHashMap(8);
+        Map<String, List<String>> kueues;
         try (FileReader reader = new FileReader(CONFIG)) {
             // noinspection unchecked
-            queues = gson.fromJson(reader, Map.class);
+            kueues = gson.fromJson(reader, Map.class);
         } catch (IOException e) {
             if (!(e instanceof FileNotFoundException)) throw new RuntimeException(e);
 
@@ -44,14 +58,8 @@ public final class LanguagePriorityQueue {
             return QUEUES;
         }
 
-        if (queues.isEmpty()) {
-            genDefaultQueues();
-            createConfig();
-        } else {
-            queues.forEach((k, v) -> QUEUES.put(k, v.toArray(String[]::new)));
-        }
-
-        return QUEUES;
+        kueues.forEach((k, v) -> queues.put(k, v.toArray(String[]::new)));
+        return queues;
     }
 
     private static void genDefaultQueues() {
@@ -61,24 +69,14 @@ public final class LanguagePriorityQueue {
         QUEUES.put("lzh", new String[]{"zh_cn", "zh_hk", "zh_tw"});
         QUEUES.put("en_nz", new String[]{"en_gb", "en_au"});
         QUEUES.put("en_au", new String[]{"en_gb", "en_nz"});
-        QUEUES.put("enws", new String[]{"en_gb"});
-        QUEUES.put("enp", new String[]{"en_gb"});
+        QUEUES.put("fr_fr", new String[]{"fr_ca"});
+        QUEUES.put("fr_ca", new String[]{"fr_fr"});
     }
 
     private static void createConfig() {
         LOGGER.info("Not found {} or it's empty, creating...", CONFIG);
 
-        if (!CONFIG_PATH.toFile().exists() && !CONFIG_PATH.toFile().mkdirs()) {
-            throw new RuntimeException("Failed creating config directory(s)");
-        }
-
-        if (!CONFIG.exists()) {
-            try {
-                if (!CONFIG.createNewFile()) LOGGER.warn("Failed creating config file");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        createBasicConfigFile();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(CONFIG)) {
@@ -86,5 +84,22 @@ public final class LanguagePriorityQueue {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void createBasicConfigFile() {
+        if (CONFIG.exists()) return;
+
+        if (!CONFIG_PATH.toFile().exists() && !CONFIG_PATH.toFile().mkdirs()) {
+            throw new RuntimeException("Failed creating config dir(s)");
+        }
+
+        boolean isSuccess;
+        try {
+            isSuccess = CONFIG.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (!isSuccess) throw new RuntimeException("Failed creating config file");
     }
 }
