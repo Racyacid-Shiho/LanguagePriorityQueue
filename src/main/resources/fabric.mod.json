@@ -3,18 +3,13 @@
 	"id": "lpq",
 	"version": "${version}",
 	"name": "Language Priority Queue",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Optimized the language loading order",
 	"authors": ["Racyacid"],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Racyacid-Shiho/LanguagePriorityQueue",
+		"sources": "https://github.com/Racyacid-Shiho/LanguagePriorityQueue"
 	},
 	"license": "CC0-1.0",
 	"environment": "client",
-	"mixins": ["lpq.mixins.json"],
-	"depends": {
-		"minecraft": "~1.21.5",
-		"java": ">=21",
-		"fabric-api": "*"
-	}
+	"mixins": ["lpq.mixins.json"]
 }

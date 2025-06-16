@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import net.fabricmc.loader.api.FabricLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,12 +14,13 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public final class LanguagePriorityQueue {
     private static final HashMap<String, String[]> QUEUES = HashMap.newHashMap(8);
     private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().toAbsolutePath().resolve("lpq");
     private static final File CONFIG = CONFIG_PATH.resolve("queues.json").toFile();
-    public static final Logger LOGGER = LoggerFactory.getLogger("LPQ");
+    public static final Logger LOGGER = Logger.getLogger("LPQ");
 
     @SuppressWarnings("SameReturnValue")
     public static Map<String, String[]> getQueues() {
@@ -54,7 +53,7 @@ public final class LanguagePriorityQueue {
             return QUEUES;
         } catch (JsonSyntaxException e) {
             genDefaultQueues();
-            LOGGER.warn("Failed loading queues.json, cause: {}. The game will use default queues!", e.toString());
+            LOGGER.warning(String.format("Failed loading queues.json, cause: %s. The game will use default queues!", e));
             return QUEUES;
         }
 
@@ -74,7 +73,7 @@ public final class LanguagePriorityQueue {
     }
 
     private static void createConfig() {
-        LOGGER.info("Not found {} or it's empty, creating...", CONFIG);
+        LOGGER.info(String.format("Not found %s or it's empty, creating...", CONFIG));
 
         createBasicConfigFile();
 
