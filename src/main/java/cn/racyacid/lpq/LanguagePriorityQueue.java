@@ -29,8 +29,7 @@ public final class LanguagePriorityQueue {
         Map<String, String[]> queues = getOrCreateQueuesInConfig();
 
         if (queues.isEmpty()) {
-            genDefaultQueues();
-            createConfig();
+            genQueuesThenCreateConfig();
         } else {
             QUEUES.putAll(queues);
         }
@@ -40,28 +39,32 @@ public final class LanguagePriorityQueue {
 
     private static Map<String, String[]> getOrCreateQueuesInConfig() {
         Gson gson = new Gson();
-        Map<String, String[]> queues = HashMap.newHashMap(8);
-        Map<String, List<String>> kueues;
+        Map<String, List<String>> queuesInJson;
         try (FileReader reader = new FileReader(CONFIG)) {
             // noinspection unchecked
-            kueues = gson.fromJson(reader, Map.class);
+            queuesInJson = gson.fromJson(reader, Map.class);
         } catch (IOException e) {
             if (!(e instanceof FileNotFoundException)) throw new RuntimeException(e);
 
-            genDefaultQueues();
-            createConfig();
+            genQueuesThenCreateConfig();
             return QUEUES;
         } catch (JsonSyntaxException e) {
-            genDefaultQueues();
+            generateDefaultQueues();
             LOGGER.warning(String.format("Failed loading queues.json, cause: %s. The game will use default queues!", e));
             return QUEUES;
         }
 
-        kueues.forEach((k, v) -> queues.put(k, v.toArray(String[]::new)));
+        Map<String, String[]> queues = HashMap.newHashMap(8);
+        queuesInJson.forEach((k, v) -> queues.put(k, v.toArray(String[]::new)));
         return queues;
     }
 
-    private static void genDefaultQueues() {
+    private static void genQueuesThenCreateConfig() {
+        generateDefaultQueues();
+        createConfig();
+    }
+
+    private static void generateDefaultQueues() {
         QUEUES.put("zh_cn", new String[]{"zh_hk", "zh_tw"});
         QUEUES.put("zh_hk", new String[]{"zh_cn", "zh_tw"});
         QUEUES.put("zh_tw", new String[]{"zh_cn", "zh_hk"});
