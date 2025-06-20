@@ -9,7 +9,7 @@
 		"homepage": "https://github.com/Racyacid-Shiho/LanguagePriorityQueue",
 		"sources": "https://github.com/Racyacid-Shiho/LanguagePriorityQueue"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"environment": "client",
 	"mixins": ["lpq.mixins.json"]
 }
