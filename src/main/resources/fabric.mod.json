@@ -1,0 +1,16 @@
+{
+	"schemaVersion": 1,
+	"id": "lpq",
+	"version": "${version}",
+	"name": "Language Priority Queue",
+	"description": "Optimized the language loading order",
+	"authors": ["Phorqnaz"],
+	"contact": {
+		"homepage": "https://github.com/Racyacid-Shiho/LanguagePriorityQueue",
+		"sources": "https://github.com/Racyacid-Shiho/LanguagePriorityQueue"
+	},
+	"license": "MIT",
+	"environment": "client",
+	"mixins": ["lpq.mixins.json"],
+	"depends": {"minecraft": ">=26.1"}
+}
